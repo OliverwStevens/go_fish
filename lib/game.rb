@@ -11,15 +11,20 @@ class Game
 
   def deal_cards
     if players.count < 4
-      7.times do
-        players.each do |player|
-          player.add_card(deck.deal)
-        end
-      end
+      distrubute_cards(7)
 
     else
-      5.times do
-      end
+      distrubute_cards(5)
+    end
+  end
+end
+
+private
+
+def distrubute_cards(cards_to_deal)
+  cards_to_deal.times do
+    players.each do |player|
+      player.add_card(deck.deal)
     end
   end
 end
