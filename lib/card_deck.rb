@@ -17,4 +17,8 @@ class CardDeck
   def card_count
     cards.count
   end
+
+  def shuffle!
+    cards.shuffle!
+  end
 end

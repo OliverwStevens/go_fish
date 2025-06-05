@@ -10,4 +10,10 @@ describe CardDeck do
     deck.deal
     expect(deck.card_count).to eql(51)
   end
+
+  it 'shuffles the deck' do
+    deck = CardDeck.new
+    deck.shuffle!
+    expect(deck.cards).to_not contain_exactly(deck.cards)
+  end
 end
