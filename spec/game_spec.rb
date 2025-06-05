@@ -14,4 +14,10 @@ describe Game do
 
     expect(game.players.count).to eql(5)
   end
+
+  it 'receives an opponent' do
+    game = Game.new(2)
+    allow(game).to receive(:gets).and_return('Player 2')
+    game.round
+  end
 end
