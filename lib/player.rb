@@ -1,5 +1,12 @@
 class Player
-  def initialize
+  attr_accessor :hand
+
+  def initialize(name = 'Random Player')
     @hand = []
+    @name = name
+  end
+
+  def add_card(card)
+    hand.push(card)
   end
 end
