@@ -37,10 +37,23 @@ describe Game do
     expect(game.return_opponent(player)).to eql(player2)
   end
 
-  it 'plays a roundt' do
+  it 'validates a rank' do
     game = Game.new(2)
-    allow(game).to receive(:gets).and_return('Player 2')
-    game.round
+
+    player = game.players.first
+
+    player.add_card(PlayingCard.new('♥', '2'))
+
+    allow(game).to receive(:gets).and_return('2')
+
+    expect(game.return_rank).to eql('2')
+  end
+
+  it 'plays a round' do
+    game = Game.new(2)
+
+    player2 = game.players.last
+    game.round(player2, '2')
     expect(game.rounds).to eql(1)
   end
 end
