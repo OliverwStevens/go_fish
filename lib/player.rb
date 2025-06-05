@@ -14,4 +14,8 @@ class Player
   def card_count
     hand.count
   end
+
+  def has_card_of_rank?(rank)
+    hand.any? { |card| card.rank == rank }
+  end
 end
