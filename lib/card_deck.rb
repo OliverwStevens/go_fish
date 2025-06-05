@@ -21,4 +21,8 @@ class CardDeck
   def shuffle!
     cards.shuffle!
   end
+
+  def has_cards?
+    cards.any?
+  end
 end
