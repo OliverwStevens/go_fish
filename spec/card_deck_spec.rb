@@ -11,8 +11,10 @@ describe CardDeck do
   end
 
   it 'shuffles the deck' do
+    unshuffled_deck = deck.cards.dup
     deck.shuffle!
-    expect(deck.cards).to_not contain_exactly(deck.cards)
+    expect(unshuffled_deck).to match_array deck.cards
+    expect(unshuffled_deck).to_not eql deck.cards
   end
   it 'checks to see if it has cards' do
     expect(deck.has_cards?).to eql(true)
