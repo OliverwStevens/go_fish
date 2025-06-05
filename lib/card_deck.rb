@@ -1,6 +1,6 @@
 require_relative 'playing_card'
 class CardDeck
-  attr_reader :cards
+  attr_accessor :cards
 
   def initialize
     @cards = PlayingCard::SUIT.flat_map do |suit|
@@ -8,5 +8,13 @@ class CardDeck
         PlayingCard.new(suit, rank)
       end
     end
+  end
+
+  def deal
+    cards.pop
+  end
+
+  def card_count
+    cards.count
   end
 end
