@@ -20,7 +20,15 @@ class Game
     end
   end
 
-  def round(opponent, rank)
+  def round(current_player, opponent, rank)
+    if opponent.has_card_of_rank?(rank)
+      cards = opponent.remove_cards(rank)
+      current_player.add_cards(cards)
+      "You got #{cards}"
+    else
+      current_player.add_card(deck.deal)
+      "Go fish! #{current_player.hand.last}"
+    end
   end
 
   def return_opponent(current_player, input_opponent)

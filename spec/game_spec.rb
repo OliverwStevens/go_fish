@@ -42,4 +42,30 @@ describe Game do
     opponent = game.players.last
     expect(game.validate_input?(opponent, '2')).to eql(true)
   end
+  it 'plays a round' do
+    game = Game.new(2)
+
+    player_1 = game.players.first
+    player_2 = game.players.last
+
+    player_1.add_card(PlayingCard.new('♥', '2'))
+    player_2.add_card(PlayingCard.new('♦', '2'))
+
+    game.round(player_1, player_2, '2')
+    expect(player_2.card_count).to eql(0)
+  end
+  it 'Gos Fish' do
+    game = Game.new(2)
+
+    player_1 = game.players.first
+    player_2 = game.players.last
+
+    player_1.add_card(PlayingCard.new('♥', '2'))
+    player_2.add_card(PlayingCard.new('♦', '3'))
+
+    game.round(player_1, player_2, '2')
+    expect(player_1.card_count).to eql(2)
+
+    expect(player_2.card_count).to eql(1)
+  end
 end
