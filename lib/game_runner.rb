@@ -24,12 +24,15 @@ until game.validate_input?(opponent, rank)
   opponent_input = gets.chomp
   opponent = game.return_opponent(current_player, opponent_input)
 
+  opponent.hand.each do |card|
+    puts "#{card.rank} of #{card.suit}"
+  end
   puts 'What rank do you want?'
   rank_input = gets.chomp
   rank = game.return_rank(current_player, rank_input)
 
 end
 
-# game.round
+puts game.round(current_player, opponent, rank)
 
 rounds += 1

@@ -24,27 +24,23 @@ class Game
     if opponent.has_card_of_rank?(rank)
       cards = opponent.remove_cards(rank)
       current_player.add_cards(cards)
-      "You got #{cards}"
+      "You got #{cards.count} card(s) of rank #{cards.first.rank}"
     else
       current_player.add_card(deck.deal)
-      "Go fish! #{current_player.hand.last}"
+      "Go fish! You got a card of rank #{current_player.hand.last.rank}"
     end
   end
 
   def return_opponent(current_player, input_opponent)
-    opponent = players.find do |p|
+    players.find do |p|
       p.name.downcase == input_opponent.downcase && input_opponent.downcase != current_player.name.downcase
     end
-
-    p opponent
-    opponent
   end
 
   def return_rank(current_player, input_rank)
     rank = PlayingCard::RANK.find { |r| r.downcase == input_rank.downcase }
     # validates that the player has a card of that rank
     rank = [] unless current_player.has_card_of_rank?(rank)
-    p rank
     rank
   end
 
