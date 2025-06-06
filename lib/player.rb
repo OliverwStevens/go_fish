@@ -13,6 +13,10 @@ class Player
     hand.push(card)
   end
 
+  def has_cards?
+    hand.any?
+  end
+
   def card_count
     hand.count
   end
@@ -40,8 +44,7 @@ class Player
       hand_hash[card] = card.value
     end
     process_matching(hand_hash)
-
-    matches.keys
+    "You have #{matches.count} matches"
   end
 
   # matches.max

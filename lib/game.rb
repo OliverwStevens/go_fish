@@ -22,8 +22,7 @@ class Game
 
   def round(current_player, opponent, rank)
     if opponent.has_card_of_rank?(rank)
-      cards = opponent.remove_cards(rank)
-      current_player.add_cards(cards)
+      cards = get_opponent_cards(current_player, opponent, rank)
       "You received #{cards.count} card(s) of rank #{cards.first.rank}"
     else
       current_player.add_card(deck.deal)
@@ -56,5 +55,11 @@ class Game
         player.add_card(deck.deal)
       end
     end
+  end
+
+  def get_opponent_cards(current_player, opponent, rank)
+    cards = opponent.remove_cards(rank)
+    current_player.add_cards(cards)
+    cards
   end
 end

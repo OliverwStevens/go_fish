@@ -23,4 +23,12 @@ describe Player do
     expect(player.matches.count).to eql(2)
     expect(player.card_count).to eql(1)
   end
+
+  it 'checks to see if the player has cards' do
+    player = Player.new
+    expect(player.has_cards?).to eql(false)
+
+    player.hand = [PlayingCard.new('♥', '2')]
+    expect(player.has_cards?).to eql(true)
+  end
 end

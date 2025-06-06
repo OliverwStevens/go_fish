@@ -54,6 +54,19 @@ describe Game do
     expect(game.round(player_1, player_2, '2')).to match(/received/i)
     expect(player_2.card_count).to eql(0)
   end
+
+  it 'does not take the opponents other card' do
+    game = Game.new(2)
+
+    player_1 = game.players.first
+    player_2 = game.players.last
+
+    player_1.hand = [PlayingCard.new('♥', '2'), PlayingCard.new('♥', '3')]
+    player_2.hand = [PlayingCard.new('♦', '2'), PlayingCard.new('♦', '3')]
+
+    expect(game.round(player_1, player_2, '2')).to match(/received/i)
+    expect(player_2.card_count).to eql(1)
+  end
   it 'Gos Fish' do
     game = Game.new(2)
 

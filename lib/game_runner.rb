@@ -12,6 +12,11 @@ end
 
 # Loop here, this will be a turn
 current_player = game.players[rounds % game.players.count]
+rounds += 1
+
+# loop for turn here
+turn_over = false
+puts 'You do not have any cards, wait for the game to finish' unless current_player.has_cards?
 
 puts 'Your cards are'
 current_player.hand.each do |card|
@@ -33,6 +38,11 @@ until game.validate_input?(opponent, rank)
 
 end
 # Add turn continuing functionality
-puts game.round(current_player, opponent, rank)
+message = game.round(current_player, opponent, rank)
+puts message
 
-rounds += 1
+turn_over = false unless message.match("rank #{rank}")
+
+# check for matches
+
+puts current_player.find_matches
