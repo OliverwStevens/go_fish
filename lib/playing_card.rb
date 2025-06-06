@@ -8,4 +8,8 @@ class PlayingCard
     @suit = suit
     @rank = rank
   end
+
+  def value
+    RANK.index(rank)
+  end
 end

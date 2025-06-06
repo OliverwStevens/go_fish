@@ -6,4 +6,9 @@ describe PlayingCard do
     expect(card.rank).to eql('2')
     expect(card.suit).to eql('♥')
   end
+
+  it 'has a value' do
+    card = PlayingCard.new('♥', '2')
+    expect(card.value).to eql(0)
+  end
 end

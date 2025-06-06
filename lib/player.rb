@@ -1,3 +1,4 @@
+require_relative 'playing_card'
 class Player
   attr_reader :name
   attr_accessor :hand
@@ -30,5 +31,22 @@ class Player
 
   def add_cards(cards)
     self.hand += cards
+  end
+
+  def find_matches
+    # PlayingCard::RANK.each do |rank|
+    #   rank_array = []
+    #   PlayingCard::SUIT.each do |suit|
+    #     rank_array << PlayingCard.new(suit, rank)
+    #   end
+
+    #   p (hand.rank & rank_array.rank).any?
+    # end
+    h = {}
+    hand.each do |card|
+      h[card] = card.rank
+    end
+    g = h.group_by { |key, value| value }
+    p g
   end
 end
