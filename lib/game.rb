@@ -25,33 +25,41 @@ class Game
   def round(opponent = nil, rank = nil)
     current_player = players[rounds % players.count]
 
+    # print out cards
+    puts 'Your cards are'
+    current_player.hand.each do |card|
+      puts "#{card.rank} of #{card.suit}"
+    end
+
+    # ask for cards
     puts 'Which player would you like to ask for a card?'
     opponent = return_opponent(current_player) if opponent.nil?
 
     puts 'What rank?'
-    rank = return_rank if rank.nil?
 
+    rank = return_rank(current_player) if rank.nil?
     self.rounds += 1
   end
 
-  def return_opponent(player)
+  def return_opponent(current_player)
     opponent = []
     while [[], nil].include?(opponent)
       opponent_name = gets.chomp.downcase
-      opponent = players.find { |p| p.name.downcase == opponent_name && opponent_name != player.name.downcase }
+      opponent = players.find { |p| p.name.downcase == opponent_name && opponent_name != current_player.name.downcase }
     end
 
     p opponent
     opponent
   end
 
-  def return_rank
+  def return_rank(current_player)
     rank = []
     # valididate that the rank is indeed an actual rank
-    while rank == []
+    while [[], nil].include?(rank)
       input = gets.chomp.downcase
       rank = PlayingCard::RANK.find { |r| r.downcase == input }
-      p rank
+      # validates that the player has a card of that rank
+      rank = [] unless current_player.has_card_of_rank?(rank)
     end
     rank
   end

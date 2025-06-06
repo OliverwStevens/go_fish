@@ -44,9 +44,11 @@ describe Game do
 
     player.add_card(PlayingCard.new('♥', '2'))
 
+    allow(game).to receive(:gets).and_return('3')
+
     allow(game).to receive(:gets).and_return('2')
 
-    expect(game.return_rank).to eql('2')
+    expect(game.return_rank(player)).to eql('2')
   end
 
   it 'plays a round' do
