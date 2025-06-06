@@ -20,42 +20,32 @@ describe Game do
     player = game.players.first
     player2 = game.players.last
 
-    allow(game).to receive(:gets).and_return('Player 2')
+    # allow(game).to receive(:gets).and_return('Player 2')
 
-    expect(game.return_opponent(player)).to eql(player2)
+    expect(game.return_opponent(player, 'Player 2')).to eql(player2)
   end
 
-  it 'validates an opponent' do
-    game = Game.new(2)
-    player = game.players.first
-    player2 = game.players.last
-
-    allow(game).to receive(:gets).and_return('Not a valid player')
-
-    allow(game).to receive(:gets).and_return('Player 2')
-
-    expect(game.return_opponent(player)).to eql(player2)
-  end
-
-  it 'validates a rank' do
+  it 'returns a rank' do
     game = Game.new(2)
 
     player = game.players.first
 
     player.add_card(PlayingCard.new('♥', '2'))
 
-    allow(game).to receive(:gets).and_return('3')
+    # allow(game).to receive(:gets).and_return('3')
 
-    allow(game).to receive(:gets).and_return('2')
-
-    expect(game.return_rank(player)).to eql('2')
+    expect(game.return_rank(player, '2')).to eql('2')
   end
 
+  it 'validates input' do
+    game = Game.new(2)
+    opponent = game.players.last
+    expect(game.validate_input(opponent, '2')).to eql(true)
+  end
   it 'plays a round' do
     game = Game.new(2)
 
-    player2 = game.players.last
-    game.round(player2, '2')
+    game.round('Player 2', '2')
     expect(game.rounds).to eql(1)
   end
 end

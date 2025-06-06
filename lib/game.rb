@@ -22,7 +22,7 @@ class Game
     end
   end
 
-  def round(opponent = nil, rank = nil)
+  def round(input_opponent, input_rank)
     current_player = players[rounds % players.count]
 
     # print out cards
@@ -33,35 +33,33 @@ class Game
 
     # ask for cards
     puts 'Which player would you like to ask for a card?'
-    opponent = return_opponent(current_player) if opponent.nil?
+    opponent = return_opponent(current_player, input_opponent)
 
     puts 'What rank?'
 
-    rank = return_rank(current_player) if rank.nil?
+    rank = return_rank(current_player, input_rank)
     self.rounds += 1
   end
 
-  def return_opponent(current_player)
-    opponent = []
-    while [[], nil].include?(opponent)
-      opponent_name = gets.chomp.downcase
-      opponent = players.find { |p| p.name.downcase == opponent_name && opponent_name != current_player.name.downcase }
+  def return_opponent(current_player, input_opponent)
+    opponent = players.find do |p|
+      p.name.downcase == input_opponent.downcase && input_opponent.downcase != current_player.name.downcase
     end
 
     p opponent
     opponent
   end
 
-  def return_rank(current_player)
-    rank = []
-    # valididate that the rank is indeed an actual rank
-    while [[], nil].include?(rank)
-      input = gets.chomp.downcase
-      rank = PlayingCard::RANK.find { |r| r.downcase == input }
-      # validates that the player has a card of that rank
-      rank = [] unless current_player.has_card_of_rank?(rank)
-    end
+  def return_rank(current_player, input_rank)
+    rank = PlayingCard::RANK.find { |r| r.downcase == input_rank.downcase }
+    # validates that the player has a card of that rank
+    rank = [] unless current_player.has_card_of_rank?(rank)
+    p rank
     rank
+  end
+
+  def validate_input(opponent, rank)
+    opponent != [] && rank != []
   end
 
   private
