@@ -32,7 +32,7 @@ until game.validate_input?(opponent, rank)
   rank = game.return_rank(current_player, rank_input)
 
 end
-
+# Add turn continuing functionality
 puts game.round(current_player, opponent, rank)
 
 rounds += 1
