@@ -1,11 +1,12 @@
 require_relative 'playing_card'
 class Player
   attr_reader :name
-  attr_accessor :hand
+  attr_accessor :hand, :matches
 
   def initialize(name = 'Random Player')
     @hand = []
     @name = name
+    @matches = {}
   end
 
   def add_card(card)
@@ -34,19 +35,17 @@ class Player
   end
 
   def find_matches
-    # PlayingCard::RANK.each do |rank|
-    #   rank_array = []
-    #   PlayingCard::SUIT.each do |suit|
-    #     rank_array << PlayingCard.new(suit, rank)
-    #   end
-
-    #   p (hand.rank & rank_array.rank).any?
-    # end
-    h = {}
+    hand_hash = {}
     hand.each do |card|
-      h[card] = card.rank
+      hand_hash[card] = card.value
     end
-    g = h.group_by { |key, value| value }
-    p g
+    sorted_hash = hand_hash.group_by { |key, value| value }
+
+    sorted_hash.each do |key, value|
+      matches[key] = value if sorted_hash[key].count == 4
+    end
+    matches.keys
   end
+
+  # matches.max
 end
