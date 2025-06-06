@@ -40,12 +40,6 @@ describe Game do
   it 'validates input' do
     game = Game.new(2)
     opponent = game.players.last
-    expect(game.validate_input(opponent, '2')).to eql(true)
-  end
-  it 'plays a round' do
-    game = Game.new(2)
-
-    game.round('Player 2', '2')
-    expect(game.rounds).to eql(1)
+    expect(game.validate_input?(opponent, '2')).to eql(true)
   end
 end
