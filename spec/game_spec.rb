@@ -42,7 +42,7 @@ describe Game do
     opponent = game.players.last
     expect(game.validate_input?(opponent, '2')).to eql(true)
   end
-  it 'plays a round' do
+  it 'Ask for card and gets it from opponent' do
     game = Game.new(2)
 
     player_1 = game.players.first

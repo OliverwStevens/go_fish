@@ -39,13 +39,23 @@ class Player
     hand.each do |card|
       hand_hash[card] = card.value
     end
-    sorted_hash = hand_hash.group_by { |key, value| value }
+    process_matching(hand_hash)
 
-    sorted_hash.each do |key, value|
-      matches[key] = value if sorted_hash[key].count == 4
-    end
     matches.keys
   end
 
   # matches.max
+  #
+  private
+
+  def process_matching(hand_hash)
+    sorted_hash = hand_hash.group_by { |key, value| value }
+
+    sorted_hash.each do |key, value|
+      next unless sorted_hash[key].count == 4
+
+      matches[key] = value
+      remove_cards(PlayingCard::RANK[key])
+    end
+  end
 end

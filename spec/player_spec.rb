@@ -21,5 +21,6 @@ describe Player do
 
     player.find_matches
     expect(player.matches.count).to eql(2)
+    expect(player.card_count).to eql(1)
   end
 end
