@@ -51,7 +51,7 @@ describe Game do
     player_1.add_card(PlayingCard.new('♥', '2'))
     player_2.add_card(PlayingCard.new('♦', '2'))
 
-    expect(game.round(player_1, player_2, '2')).to match(/card(s) of rank/)
+    expect(game.round(player_1, player_2, '2')).to match(/received/i)
     expect(player_2.card_count).to eql(0)
   end
   it 'Gos Fish' do
