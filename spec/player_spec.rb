@@ -32,4 +32,13 @@ describe Player do
     player.hand = [PlayingCard.new('♥', '2')]
     expect(player.has_cards?).to eql(true)
   end
+
+  it 'correctly returns a formated string of matches' do
+    player = Player.new
+    player.hand = [PlayingCard.new('♥', '2'), PlayingCard.new('♦', '2'), PlayingCard.new('♠', '2'),
+                   PlayingCard.new('♣', '2'), PlayingCard.new('♥', '3'), PlayingCard.new('♦', '3'), PlayingCard.new('♠', '3'),
+                   PlayingCard.new('♣', '3'), PlayingCard.new('♣', '5')]
+
+    expect(player.find_matches).to match(/You matched the 2's and 3's/i)
+  end
 end

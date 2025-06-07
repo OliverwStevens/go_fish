@@ -39,26 +39,43 @@ class Player
   end
 
   def find_matches
-    hand_hash = {}
-    hand.each do |card|
-      hand_hash[card] = card.value
+    sorted_hash = get_sorted_hash
+    processed = process_matching(sorted_hash)
+    return 'No matches' unless processed.any?
+
+    print_matching(processed)
+  end
+
+  def print_matching(printing)
+    string = ''
+    printing.each_with_index do |(key, value), index|
+      # binding.irb
+      string.concat("#{PlayingCard::RANK[key]}'s")
+      string.concat(' and ') if index + 1 < printing.count
     end
-    process_matching(hand_hash)
-    "You have #{matches.count} matches"
+    'You matched the '.concat(string)
   end
 
   # matches.max
   #
   private
 
-  def process_matching(hand_hash)
+  def get_sorted_hash
+    hand_hash = {}
+    hand.each do |card|
+      hand_hash[card] = card.value
+    end
     sorted_hash = hand_hash.group_by { |key, value| value }
+  end
 
+  def process_matching(sorted_hash, printing = {})
     sorted_hash.each do |key, value|
       next unless sorted_hash[key].count == 4
 
       matches[key] = value
+      printing[key] = value
       remove_cards(PlayingCard::RANK[key])
     end
+    printing
   end
 end
