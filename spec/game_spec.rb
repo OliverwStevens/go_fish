@@ -67,7 +67,7 @@ describe Game do
     expect(game.round(player_1, player_2, '2')).to match(/received/i)
     expect(player_2.card_count).to eql(1)
   end
-  it 'Gos Fish' do
+  it 'plays a Go Fish round' do
     game = Game.new(2)
 
     player_1 = game.players.first
@@ -87,5 +87,18 @@ describe Game do
     player_1 = game.players.first
     expect(game.draw_if_hand_empty(player_1)).to match(/You do not have any cards/i)
     expect(player_1.card_count).to eql(1)
+  end
+
+  it 'tests the go fish method when the deck is out of cards' do
+    game = Game.new(2)
+    game.deck.cards = []
+    player_1 = game.players.first
+    expect(game.go_fish(player_1)).to match(/no cards left to draw/i)
+  end
+
+  it 'tests the go fish method when the deck has cards' do
+    game = Game.new(2)
+    player_1 = game.players.first
+    expect(game.go_fish(player_1)).to match(/Go fish! You got/i)
   end
 end

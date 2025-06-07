@@ -2,7 +2,6 @@ require_relative 'game'
 
 game = Game.new
 game.deal_cards
-
 rounds = 0
 
 puts 'The players in this game are:'
@@ -18,7 +17,14 @@ rounds += 1
 turn_over = false
 
 until turn_over
-  puts game.draw_if_hand_empty(current_player) unless current_player.has_cards?
+  unless current_player.has_cards?
+    if deck.has_cards?
+      puts game.draw_if_hand_empty(current_player)
+    else
+      turn_over = true
+      puts 'The deck is out of cards, you are out of the game.'
+    end
+  end
 
   puts 'Your cards are'
   current_player.hand.each do |card|
@@ -31,7 +37,7 @@ until turn_over
     opponent_input = gets.chomp
     opponent = game.return_opponent(current_player, opponent_input)
 
-    opponent.hand.each do |card|
+    opponent&.hand&.each do |card|
       puts "#{card.rank} of #{card.suit}"
     end
     puts 'What rank do you want?'
@@ -43,7 +49,7 @@ until turn_over
   message = game.round(current_player, opponent, rank)
   puts message
 
-  turn_over = false unless message.match("rank #{rank}")
+  turn_over = true unless message.match("rank #{rank}")
 
   # check for matches
 

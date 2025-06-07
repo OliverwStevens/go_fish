@@ -25,9 +25,7 @@ class Game
       cards = get_opponent_cards(current_player, opponent, rank)
       "You received #{cards.count} card(s) of rank #{cards.first.rank}"
     else
-      # fix the this thing
-      current_player.add_card(deck.deal)
-      "Go fish! You got a card of rank #{current_player.hand.last.rank}"
+      go_fish(current_player)
     end
   end
 
@@ -52,6 +50,15 @@ class Game
     card = deck.deal
     current_player.add_card(card)
     "You do not have any cards, so you draw the card #{card.rank} of #{card.suit} from the deck"
+  end
+
+  def go_fish(current_player)
+    if deck.has_cards?
+      current_player.add_card(deck.deal)
+      "Go fish! You got a card of rank #{current_player.hand.last.rank}"
+    else
+      'Go fish! There are no cards left to draw, your turn is over'
+    end
   end
 
   private
