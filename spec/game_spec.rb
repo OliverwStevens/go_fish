@@ -81,4 +81,11 @@ describe Game do
 
     expect(player_2.card_count).to eql(1)
   end
+
+  it 'draws when the hand is empty' do
+    game = Game.new(2)
+    player_1 = game.players.first
+    expect(game.draw_if_hand_empty(player_1)).to match(/You do not have any cards/i)
+    expect(player_1.card_count).to eql(1)
+  end
 end

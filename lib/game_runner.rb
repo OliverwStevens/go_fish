@@ -18,7 +18,7 @@ rounds += 1
 turn_over = false
 
 until turn_over
-  puts 'You do not have any cards, wait for the game to finish' unless current_player.has_cards?
+  puts game.draw_if_hand_empty(current_player) unless current_player.has_cards?
 
   puts 'Your cards are'
   current_player.hand.each do |card|

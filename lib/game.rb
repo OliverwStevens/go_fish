@@ -48,6 +48,12 @@ class Game
     !opponent.nil? && !rank.nil?
   end
 
+  def draw_if_hand_empty(current_player)
+    card = deck.deal
+    current_player.add_card(card)
+    "You do not have any cards, so you draw the card #{card.rank} of #{card.suit} from the deck"
+  end
+
   private
 
   def distrubute_cards(cards_to_deal)
