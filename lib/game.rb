@@ -25,6 +25,7 @@ class Game
       cards = get_opponent_cards(current_player, opponent, rank)
       "You received #{cards.count} card(s) of rank #{cards.first.rank}"
     else
+      # fix the this thing
       current_player.add_card(deck.deal)
       "Go fish! You got a card of rank #{current_player.hand.last.rank}"
     end
