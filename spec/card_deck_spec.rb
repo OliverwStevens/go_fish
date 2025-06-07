@@ -1,3 +1,4 @@
+require_relative 'spec_helper'
 require_relative '../lib/card_deck'
 describe CardDeck do
   let(:deck) { CardDeck.new }

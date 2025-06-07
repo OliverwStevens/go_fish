@@ -1,3 +1,4 @@
+require_relative 'spec_helper'
 require_relative '../lib/game'
 describe Game do
   it 'deals the cards when there are 2 players' do
