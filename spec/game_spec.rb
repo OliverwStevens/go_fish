@@ -21,8 +21,6 @@ describe Game do
     player = game.players.first
     player2 = game.players.last
 
-    # allow(game).to receive(:gets).and_return('Player 2')
-
     expect(game.return_opponent(player, 'Player 2')).to eql(player2)
   end
 
@@ -32,8 +30,6 @@ describe Game do
     player = game.players.first
 
     player.add_card(PlayingCard.new('♥', '2'))
-
-    # allow(game).to receive(:gets).and_return('3')
 
     expect(game.return_rank(player, '2')).to eql('2')
   end
@@ -68,12 +64,11 @@ describe Game do
     expect(game.round(player_1, player_2, '2')).to match(/received/i)
     expect(player_2.card_count).to eql(1)
   end
-  it 'plays a Go Fish round' do
+  it 'plays a round where Go Fish occurs' do
     game = Game.new(2)
 
     player_1 = game.players.first
     player_2 = game.players.last
-
     player_1.add_card(PlayingCard.new('♥', '2'))
     player_2.add_card(PlayingCard.new('♦', '3'))
 
@@ -83,7 +78,7 @@ describe Game do
     expect(player_2.card_count).to eql(1)
   end
 
-  it 'draws when the hand is empty' do
+  it 'draws a card when the hand is empty' do
     game = Game.new(2)
     player_1 = game.players.first
     expect(game.draw_if_hand_empty(player_1)).to match(/You do not have any cards/i)
