@@ -17,17 +17,20 @@ class GameSocketServer
     @clients ||= []
   end
 
-  def players
-    @players ||= []
+  def games
+    @games ||= []
   end
 
   def start
     @server = TCPServer.new(port_number)
   end
 
-  def accept_new_client(player_name = 'Random Player')
+  def accept_new_client
     client = server.accept_nonblock
     puts 'Client accepted'
+
+    # sends message asking to start the game
+
     client.puts('Welcome to Go Fish!')
     clients.push(client)
   rescue IO::WaitReadable, Errno::EINTR
@@ -35,5 +38,12 @@ class GameSocketServer
 
   def stop
     server&.close
+  end
+
+  def create_game_if_possible
+    return unless clients.count >= 2
+
+    game = Game.new(clients.count)
+    games.push(game)
   end
 end

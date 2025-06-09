@@ -23,4 +23,24 @@ describe GameSocketServer do
     @server.stop
     expect { MockGameSocketClient.new(@server.port_number) }.to raise_error(Errno::ECONNREFUSED)
   end
+
+  it 'accepts new clients' do
+    add_client(client1)
+    expect(@server.clients.count).to eql(1)
+  end
+
+  it 'trys to create a game if possible' do
+    add_client(client1)
+    add_client(client2)
+
+    @server.create_game_if_possible
+    expect(@server.games.count).to eql(1)
+  end
+end
+
+private
+
+def add_client(client)
+  @clients.push(client)
+  @server.accept_new_client
 end
