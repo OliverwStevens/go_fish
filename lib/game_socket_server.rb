@@ -17,6 +17,10 @@ class GameSocketServer
     @clients ||= []
   end
 
+  def clients_in_rooms
+    @clients_in_rooms ||= []
+  end
+
   def rooms
     @rooms ||= []
   end
@@ -29,21 +33,26 @@ class GameSocketServer
     client = server.accept_nonblock
     puts 'Client accepted'
 
-    # sends message asking to start the game
-
     client.puts('Welcome to Go Fish!')
+
+    # sends message asking for player count and to start the game
+
     clients.push(client)
   rescue IO::WaitReadable, Errno::EINTR
+    2
   end
 
   def stop
     server&.close
   end
 
-  def create_game_if_possible
-    return unless clients.count >= 2
+  def create_game_if_possible(num_of_players = 2)
+    return unless clients.count >= num_of_players
 
-    game = GameSocketRoom.new(clients)
-    rooms.push(game)
+    room = GameSocketRoom.new(clients)
+    rooms.push(room)
+    clients_in_rooms.concat(clients)
+
+    clients.clear
   end
 end

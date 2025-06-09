@@ -33,7 +33,7 @@ describe GameSocketServer do
     add_client(client1)
     add_client(client2)
 
-    @server.create_game_if_possible
+    @server.create_game_if_possible(2)
     expect(@server.rooms.count).to eql(1)
   end
 end

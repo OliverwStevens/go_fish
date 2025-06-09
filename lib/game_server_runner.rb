@@ -4,8 +4,8 @@ server = GameSocketServer.new
 
 server.start
 loop do
-  server.accept_new_client
-  # segame = server.create_game_if_possible
+  num_of_players = server.accept_new_client
+  game = server.create_game_if_possible(num_of_players)
   # server.run_game(game) if game
 rescue # rubocop:disable Style/RescueStandardError
   server.stop
