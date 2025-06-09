@@ -55,5 +55,10 @@ class GameSocketServer
     rooms.push(room)
 
     clients.clear
+    room
+  end
+
+  def run_game(room)
+    room.run_game
   end
 end

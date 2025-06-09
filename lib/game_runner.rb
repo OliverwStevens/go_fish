@@ -19,7 +19,7 @@ until game.game_end?
 
   until turn_over
     unless current_player.has_cards?
-      if deck.has_cards?
+      if game.deck.has_cards?
         puts game.draw_if_hand_empty(current_player)
       else
         turn_over = true
