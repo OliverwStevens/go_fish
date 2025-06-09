@@ -102,4 +102,14 @@ describe Game do
     player_1 = game.players.first
     expect(game.go_fish(player_1)).to match(/Go fish! You got/i)
   end
+
+  it 'checks to see if the game is over' do
+    game = Game.new(2)
+
+    expect(game.game_end?).to eql(false)
+
+    game.players.first.matches = Array.new(13)
+
+    expect(game.game_end?).to eql(true)
+  end
 end

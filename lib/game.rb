@@ -63,6 +63,14 @@ class Game
     end
   end
 
+  def game_end?
+    match_count = 0
+    players.each do |player|
+      match_count += player.matches.count
+    end
+    match_count == 13
+  end
+
   private
 
   def distrubute_cards(cards_to_deal)
