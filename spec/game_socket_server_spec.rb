@@ -10,6 +10,7 @@ describe GameSocketServer do
     @clients = []
     @server = GameSocketServer.new
     @server.start
+    sleep 0.1
   end
 
   after(:each) do
