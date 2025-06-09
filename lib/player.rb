@@ -41,7 +41,7 @@ class Player
   def find_matches
     sorted_hash = get_sorted_hash
     processed = process_matching(sorted_hash)
-    return 'No matches' unless processed.any?
+    return 'You made no matches' unless processed.any?
 
     print_matching(processed)
   end
@@ -53,7 +53,7 @@ class Player
       string.concat("#{PlayingCard::RANK[key]}'s")
       string.concat(' and ') if index + 1 < printing.count
     end
-    'You matched the '.concat(string)
+    'You matched the '.concat(string).concat(". You have made #{matches} total.")
   end
 
   # matches.max

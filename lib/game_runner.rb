@@ -4,7 +4,7 @@ game = Game.new
 game.deal_cards
 rounds = 0
 
-puts 'The players in this game are:'
+puts 'The players in this game are'
 game.players.each do |player|
   puts player.name
 end
