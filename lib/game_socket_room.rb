@@ -1,4 +1,4 @@
 class GameSocketRoom
-  def initialize
+  def initialize(clients)
   end
 end

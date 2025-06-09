@@ -1,6 +1,6 @@
 require 'socket'
 
-require_relative 'game'
+require_relative 'game_socket_room'
 
 class GameSocketServer
   attr_accessor :server, :responses
@@ -17,8 +17,8 @@ class GameSocketServer
     @clients ||= []
   end
 
-  def games
-    @games ||= []
+  def rooms
+    @rooms ||= []
   end
 
   def start
@@ -43,7 +43,7 @@ class GameSocketServer
   def create_game_if_possible
     return unless clients.count >= 2
 
-    game = Game.new(clients.count)
-    games.push(game)
+    game = GameSocketRoom.new(clients)
+    rooms.push(game)
   end
 end
