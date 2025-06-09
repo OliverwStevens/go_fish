@@ -50,13 +50,17 @@ describe GameSocketRoom do
   end
 
   it 'gets the rank' do
-    get_player(1).hand = [PlayingCard.new('♥', '2')]
+    get_player(0).hand = [PlayingCard.new('♥', '2')]
     client1.provide_input('2')
-    expect(@room.get_rank(@room.current_client, get_player(1))).to eql('2')
+    expect(@room.get_rank(@room.current_client, get_player(0))).to eql('2')
   end
 
   it 'gets the current player' do
-    expect(@room.current_player).to eql(get_player(1))
+    expect(@room.current_player).to eql(get_player(0))
+  end
+
+  it 'checks to see that the current player has cards' do
+    expect(@room.check_to_have_cards)
   end
 
   xit 'plays a round' do

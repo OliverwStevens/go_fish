@@ -35,9 +35,21 @@ class GameSocketRoom
   end
 
   def round
+    check_to_have_cards
   end
 
   def turn
+  end
+
+  def check_to_have_cards
+    return if current_player.has_cards?
+
+    if game.deck.has_cards?
+      current_client.puts game.draw_if_hand_empty(current_player)
+    else
+      turn_over = true
+      current_client.puts 'The deck is out of cards, you are out of the game.'
+    end
   end
 
   def message_all_clients(message)
