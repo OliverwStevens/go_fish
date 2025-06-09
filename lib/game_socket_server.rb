@@ -49,10 +49,11 @@ class GameSocketServer
   def create_game_if_possible(num_of_players = 2)
     return unless clients.count >= num_of_players
 
-    room = GameSocketRoom.new(clients)
-    rooms.push(room)
-    clients_in_rooms.concat(clients)
+    room_members = clients_in_rooms.concat(clients)
 
-    # clients.clear
+    room = GameSocketRoom.new(room_members)
+    rooms.push(room)
+
+    clients.clear
   end
 end
