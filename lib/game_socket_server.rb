@@ -38,8 +38,8 @@ class GameSocketServer
     # sends message asking for player count and to start the game
 
     clients.push(client)
-  rescue IO::WaitReadable, Errno::EINTR
     2
+  rescue IO::WaitReadable, Errno::EINTR
   end
 
   def stop

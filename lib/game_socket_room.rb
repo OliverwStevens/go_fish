@@ -3,7 +3,8 @@ class GameSocketRoom
   attr_accessor :game
 
   def initialize(clients)
-    @game = Game.new
+    puts 'Created game'
+    @game = Game.new(clients.count)
     @rounds = 0
 
     game.deal_cards
