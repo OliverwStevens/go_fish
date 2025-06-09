@@ -53,6 +53,6 @@ class GameSocketServer
     rooms.push(room)
     clients_in_rooms.concat(clients)
 
-    clients.clear
+    # clients.clear
   end
 end
