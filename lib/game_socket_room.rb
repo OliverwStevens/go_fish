@@ -30,6 +30,16 @@ class GameSocketRoom
     clients[rounds % clients.count]
   end
 
+  def current_player
+    game.players[rounds % game.players.count]
+  end
+
+  def round
+  end
+
+  def turn
+  end
+
   def message_all_clients(message)
     # binding.irb
     clients.each do |client|
