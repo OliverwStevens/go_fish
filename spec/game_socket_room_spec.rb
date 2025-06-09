@@ -32,16 +32,26 @@ describe GameSocketRoom do
   it 'makes a room with 2 players' do
     expect(@room.game.players.count).to eql(2)
   end
+
+  it 'starts the game' do
+    @room.start_game
+    expect(client1.capture_output).to match(/the players/i)
+  end
   it '#message_all_clients' do
     @room.message_all_clients('Hello')
     expect(client1.capture_output).to match(/hello/i)
     # expect(client2.capture_output).to match(/hello/i)
   end
 
-  xit 'gets the opponent' do
+  it 'gets the opponent' do
     client1.provide_input('Player 2')
-    binding.irb
-    expect(@room.get_opponent(client1, get_player(1))).to eql(get_player(2))
+    # binding.irb
+    expect(@room.get_opponent(@room.current_client, get_player(1))).to eql(get_player(2))
+  end
+
+  xit 'gets the rank' do
+    client1.provide_input('2')
+    expect(@room.get_rank(client1, get_player(1))).to eql('2')
   end
 
   xit 'plays a round' do
