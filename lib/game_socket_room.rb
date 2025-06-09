@@ -22,6 +22,8 @@ class GameSocketRoom
   def run_game
     until game.game_end?
       # Loop here, this will be a turn
+      check_to_have_cards
+      display_cards
       round
     end
   end
@@ -49,6 +51,13 @@ class GameSocketRoom
     else
       turn_over = true
       current_client.puts 'The deck is out of cards, you are out of the game.'
+    end
+  end
+
+  def display_cards
+    current_client.puts "#{current_player.name} your cards are"
+    current_player.hand.each do |card|
+      current_client.puts "#{card.rank} of #{card.suit}"
     end
   end
 

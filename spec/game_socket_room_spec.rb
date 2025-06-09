@@ -63,6 +63,12 @@ describe GameSocketRoom do
     expect(@room.check_to_have_cards)
   end
 
+  it 'displays the cards' do
+    @room.start_game
+    @room.display_cards
+    expect(client1.capture_output).to match(/of/i)
+  end
+
   xit 'plays a round' do
     get_player(1).hand = [PlayingCard.new('♥', '2')]
     # get_player(2).hand = [PlayingCard.new('♦', '2')]
