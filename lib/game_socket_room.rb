@@ -13,7 +13,7 @@ class GameSocketRoom
 
     message_all_clients('The players in this game are')
     game.players.each do |player|
-      puts player.name
+      message_all_clients(player.name)
     end
   end
 
