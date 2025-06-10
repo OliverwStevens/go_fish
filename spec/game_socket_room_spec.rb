@@ -17,7 +17,7 @@ describe GameSocketRoom do
     add_client(client1)
     add_client(client2)
 
-    @server.create_game_if_possible(2)
+    @server.create_game_if_possible(2, %w[Player Player])
 
     @room = @server.rooms.first
   end
