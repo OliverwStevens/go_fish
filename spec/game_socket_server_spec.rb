@@ -32,10 +32,17 @@ describe GameSocketServer do
 
   it 'trys to create a game if possible' do
     add_client(client1)
+
     add_client(client2)
 
     @server.create_game_if_possible(2)
     expect(@server.rooms.count).to eql(1)
+  end
+
+  it 'listens for client input' do
+    add_client(client1)
+    client1.provide_input('hello')
+    expect(@server.listen_for_client(@server.clients.first)).to match(/hello/i)
   end
 end
 

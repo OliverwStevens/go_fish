@@ -3,10 +3,9 @@ require 'socket'
 require_relative 'game_socket_room'
 
 class GameSocketServer
-  attr_accessor :server, :responses
+  attr_accessor :server
 
   def initialize
-    @responses = []
   end
 
   def port_number
@@ -35,10 +34,13 @@ class GameSocketServer
 
     client.puts('Welcome to Go Fish!')
 
+    client.puts('Waiting for other players')
+
+    ask_for_name(client)
     # sends message asking for player count and to start the game
 
     clients.push(client)
-    2
+    # 2
   rescue IO::WaitReadable, Errno::EINTR
   end
 
@@ -60,5 +62,26 @@ class GameSocketServer
 
   def run_game(room)
     room.run_game
+  end
+
+  def listen_for_client(client)
+    sleep(0.1)
+    begin
+      # current_client.read_nonblock(1000)
+      client.gets.chomp
+    rescue IO::WaitReadable
+    end
+  end
+
+  private
+
+  def ask_for_name(client, client_name = 'Random Player')
+    client.puts('What is your name?')
+
+    client_name ||= listen_for_client(client)
+
+    client.puts("Your name is #{client_name}.")
+
+    client_name
   end
 end
