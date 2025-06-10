@@ -27,7 +27,7 @@ describe GameSocketServer do
 
   it 'accepts new clients' do
     add_client(client1)
-    expect(@server.clients.count).to eql(1)
+    expect(@server.waiting_clients.count).to eql(1)
   end
 
   it 'trys to create a game if possible' do
@@ -35,14 +35,16 @@ describe GameSocketServer do
 
     add_client(client2)
 
-    @server.create_game_if_possible(2, %w[Player Player])
+    @server.ask_for_names(%w[Player Player])
+
+    @server.create_game_if_possible(2)
     expect(@server.rooms.count).to eql(1)
   end
 
   it 'listens for client input' do
     add_client(client1)
     client1.provide_input('hello')
-    expect(@server.listen_for_client(@server.clients.first)).to match(/hello/i)
+    expect(@server.listen_for_client(@server.waiting_clients.first)).to match(/hello/i)
   end
 end
 

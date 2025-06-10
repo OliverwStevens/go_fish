@@ -5,7 +5,10 @@ server = GameSocketServer.new
 server.start
 loop do
   server.accept_new_client
+
+  server.ask_for_names
   game = server.create_game_if_possible
+
   server.run_game(game) if game
 rescue # rubocop:disable Style/RescueStandardError
   server.stop
