@@ -4,9 +4,9 @@ class Game
   attr_reader :deck
   attr_accessor :players
 
-  def initialize(num_of_players = 2)
+  def initialize(client_names = %w[Player Player])
     @deck = CardDeck.new
-    @players = Array.new(num_of_players) { |index| Player.new("Player #{index + 1}") }
+    @players = Array.new(client_names.count) { |index| Player.new("#{client_names[index]} #{index + 1}") }
 
     deck.shuffle!
   end

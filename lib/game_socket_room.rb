@@ -3,9 +3,9 @@ class GameSocketRoom
   attr_reader :clients
   attr_accessor :game, :rounds, :turn_over
 
-  def initialize(clients)
+  def initialize(clients, client_names)
     puts 'Created game'
-    @game = Game.new(clients.count)
+    @game = Game.new(client_names)
     @rounds = 0
     @clients = clients
     @turn_over = false

@@ -16,6 +16,10 @@ class GameSocketServer
     @clients ||= []
   end
 
+  def client_names
+    @client_names ||= []
+  end
+
   def clients_in_rooms
     @clients_in_rooms ||= []
   end
@@ -36,9 +40,6 @@ class GameSocketServer
 
     client.puts('Waiting for other players')
 
-    ask_for_name(client)
-    # sends message asking for player count and to start the game
-
     clients.push(client)
     # 2
   rescue IO::WaitReadable, Errno::EINTR
@@ -53,10 +54,16 @@ class GameSocketServer
 
     room_members = clients_in_rooms.concat(clients)
 
-    room = GameSocketRoom.new(room_members)
+    clients.each do |client|
+      name = ask_for_name(client)
+      client_names << name
+    end
+
+    room = GameSocketRoom.new(room_members, client_names)
     rooms.push(room)
 
     clients.clear
+    client_names.clear
     room
   end
 
@@ -75,7 +82,7 @@ class GameSocketServer
 
   private
 
-  def ask_for_name(client, client_name = 'Random Player')
+  def ask_for_name(client, client_name = nil)
     client.puts('What is your name?')
 
     client_name ||= listen_for_client(client)
