@@ -25,6 +25,7 @@ class GameSocketRoom
     until game.game_end?
       # Loop here, this will be a turn
 
+      self.turn_over = false
       round until turn_over
     end
   end
@@ -41,8 +42,11 @@ class GameSocketRoom
     check_to_have_cards
     display_cards
     opponent, rank = player_choices
+    # binding.irb
     message = game.round(current_player, opponent, rank)
-    current_client.puts = message
+
+    current_client.puts(message)
+
     current_client.puts(current_player.find_matches)
 
     message
@@ -51,6 +55,7 @@ class GameSocketRoom
   def round
     self.turn_over = true unless turn.match("rank #{rank}")
     self.rounds += 1
+    binding.irb
   end
 
   def check_to_have_cards
@@ -82,6 +87,7 @@ class GameSocketRoom
     until game.validate_input?(opponent, rank)
       opponent = get_opponent
       rank = get_rank
+      binding.irb
     end
     [opponent, rank]
   end
@@ -101,7 +107,8 @@ class GameSocketRoom
   def listen_for_client
     sleep(0.1)
     begin
-      current_client.read_nonblock(1000)
+      # current_client.read_nonblock(1000)
+      current_client.gets.chomp
     rescue IO::WaitReadable
     end
   end

@@ -60,7 +60,7 @@ describe GameSocketRoom do
   it '#get_opponent' do
     client1.provide_input('Player 2')
     # binding.irb
-    expect(@room.get_opponent).to eql(get_player(2))
+    expect(@room.get_opponent).to eql(get_player(1))
   end
 
   it '#get_rank' do

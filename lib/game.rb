@@ -36,7 +36,7 @@ class Game
   end
 
   def return_rank(current_player, input_rank)
-    rank = PlayingCard::RANK.find { |r| r.downcase == input_rank[0].downcase }
+    rank = PlayingCard::RANK.find { |r| r.downcase == input_rank.downcase }
     # validates that the player has a card of that rank
     rank = nil unless current_player.has_card_of_rank?(rank)
     rank
