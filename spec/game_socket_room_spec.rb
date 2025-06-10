@@ -53,8 +53,20 @@ describe GameSocketRoom do
     expect(@room.current_player).to eql(get_player(0))
   end
 
-  it '#check_to_have_cards' do
-    expect(@room.check_to_have_cards).to be_nil
+  context '#check_to_have_cards' do
+    it 'puts to clients when hand is empty' do
+      @room.check_to_have_cards
+      expect(client1.capture_output).to match(/You do not have any cards, so you draw the card/i)
+
+      expect(client2.capture_output).to match(/draws a card because their hand is empty/i)
+    end
+    it 'puts to clients when hand and deck are empty' do
+      @room.game.deck.cards.clear
+      @room.check_to_have_cards
+      expect(client1.capture_output).to match(/The deck is out of cards, Player 1 is out of the game./i)
+
+      expect(client2.capture_output).to match(/The deck is out of cards, Player 1 is out of the game./i)
+    end
   end
 
   it '#display_cards' do
@@ -63,16 +75,56 @@ describe GameSocketRoom do
     expect(client1.capture_output).to match(/of/i)
   end
 
-  it '#get_opponent' do
-    client1.provide_input('Player 2')
-    # binding.irb
-    expect(@room.get_opponent).to eql(get_player(1))
+  context '#get_opponent' do
+    it 'gets an opponent' do
+      client1.provide_input('Player 2')
+      # binding.irb
+      expect(@room.get_opponent).to eql(get_player(1))
+    end
+
+    it 'it does not get the opponent if it is invalid' do
+      client1.provide_input('aieiheiw')
+      # binding.irb
+      expect(@room.get_opponent).to eql(nil)
+    end
   end
 
-  it '#get_rank' do
-    get_player(0).hand = [PlayingCard.new('♥', '2')]
-    client1.provide_input('2')
-    expect(@room.get_rank).to eql('2')
+  context '#get_rank' do
+    it 'gets the rank' do
+      get_player(0).hand = [PlayingCard.new('♥', '2')]
+      client1.provide_input('2')
+      expect(@room.get_rank).to eql('2')
+    end
+
+    it 'does not get the rank when it is invalid' do
+      get_player(0).hand = [PlayingCard.new('♥', '2')]
+      client1.provide_input('irhoif')
+      expect(@room.get_rank).to eql(nil)
+      client1.provide_input('2')
+      expect(@room.get_rank).to eql('2')
+    end
+  end
+
+  context '#message_player_actions' do
+    it 'messages the other players when go fish leads to a catch' do
+      message = 'Go fish! You got a card of rank 2'
+      @room.message_player_actions(message, get_player(1).name, '2', 'made no matches')
+
+      expect(client2.capture_output).to match(/draws a card of rank 2/i)
+    end
+    it 'messages the other players when go fish does not lead to a catch' do
+      message = 'Go fish! You got a card of rank 3'
+      @room.message_player_actions(message, get_player(1).name, '2', 'made no matches')
+
+      expect(client2.capture_output).to_not match(/draws a card of rank 3/i)
+    end
+
+    it 'messages other players when the player takes a card from another player' do
+      message = 'You got a 2 cards of rank 3'
+      @room.message_player_actions(message, get_player(1).name, '3', 'made no matches')
+
+      expect(client2.capture_output).to match(/receives 2 cards of 3/i)
+    end
   end
   it '#turn' do
     get_player(0).hand = [PlayingCard.new('♥', '2')]

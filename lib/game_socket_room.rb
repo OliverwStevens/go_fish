@@ -41,8 +41,8 @@ class GameSocketRoom
   def turn(opponent = nil, rank = nil)
     check_to_have_cards
     display_cards
-    opponent ||= get_opponent
-    rank ||= get_rank
+    opponent ||= opponent = get_opponent until opponent
+    rank ||= rank = get_rank until rank
     message_results(opponent, rank)
   end
 
@@ -50,10 +50,11 @@ class GameSocketRoom
     return if current_player.has_cards?
 
     if game.deck.has_cards?
-      current_client.puts game.draw_if_hand_empty(current_player)
+      draw_if_hand_empty
+
     else
       self.turn_over = true
-      current_client.puts 'The deck is out of cards, you are out of the game.'
+      message_all_clients "The deck is out of cards, #{current_player.name} is out of the game."
     end
   end
 
@@ -78,23 +79,15 @@ class GameSocketRoom
   end
 
   def get_opponent
-    opponent = nil
-    while opponent.nil?
-      current_client.puts 'What player do you want to ask for a card?'
-      opponent_input = listen_for_client # gets.chomp
-      opponent = game.return_opponent(current_player, opponent_input)
-    end
-    opponent
+    current_client.puts 'What player do you want to ask for a card?'
+    opponent_input = listen_for_client # gets.chomp
+    game.return_opponent(current_player, opponent_input)
   end
 
   def get_rank
-    rank = nil
-    while rank.nil?
-      current_client.puts 'What rank do you want?'
-      rank_input = listen_for_client # gets.chomp
-      rank = game.return_rank(current_player, rank_input)
-    end
-    rank
+    current_client.puts 'What rank do you want?'
+    rank_input = listen_for_client # gets.chomp
+    rank = game.return_rank(current_player, rank_input)
   end
 
   def listen_for_client
@@ -106,6 +99,16 @@ class GameSocketRoom
     end
   end
 
+  def message_player_actions(message, opponent_name, rank, matches)
+    message_other_clients "#{current_player.name} asks #{opponent_name} for a card of rank #{rank}"
+
+    message_other_clients message_card_reception(message, rank)
+    message_other_clients "#{current_player.name} ".concat(matches)
+    return unless message.include? "rank #{rank}"
+
+    message_other_clients "#{current_player.name} continues their turn."
+  end
+
   private
 
   def message_results(opponent, rank)
@@ -113,7 +116,27 @@ class GameSocketRoom
 
     current_client.puts(message)
 
-    current_client.puts(current_player.find_matches)
+    find_matches = current_player.find_matches
+    current_client.puts('You '.concat(find_matches))
+
+    message_player_actions(message, opponent.name, rank, find_matches)
+
     message.include? "rank #{rank}"
+  end
+
+  def message_card_reception(message, rank)
+    return unless message.include? "rank #{rank}"
+
+    if message.include? 'Go fish'
+      "#{current_player.name} draws a card of rank #{rank} and lands their catch!"
+
+    else
+      "#{current_player.name} receives #{message[/\d+/]} cards of #{rank}"
+    end
+  end
+
+  def draw_if_hand_empty
+    current_client.puts game.draw_if_hand_empty(current_player)
+    message_other_clients "#{current_player.name} draws a card because their hand is empty."
   end
 end

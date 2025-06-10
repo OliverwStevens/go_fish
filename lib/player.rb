@@ -41,7 +41,7 @@ class Player
   def find_matches
     sorted_hash = get_sorted_hash
     processed = process_matching(sorted_hash)
-    return 'You made no matches' unless processed.any?
+    return 'made no matches' unless processed.any?
 
     print_matching(processed)
   end
