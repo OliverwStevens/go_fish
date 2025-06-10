@@ -35,7 +35,8 @@ describe GameSocketServer do
 
     add_client(client2)
 
-    @server.ask_for_names(%w[Player Player])
+    @server.client_names = ['Player, Player']
+    @server.clients = @server.waiting_clients
 
     @server.create_game_if_possible(2)
     expect(@server.rooms.count).to eql(1)
@@ -45,6 +46,15 @@ describe GameSocketServer do
     add_client(client1)
     client1.provide_input('hello')
     expect(@server.listen_for_client(@server.waiting_clients.first)).to match(/hello/i)
+  end
+
+  it 'gets names from waiting clients' do
+    add_client(client1)
+
+    client1.provide_input('Oliver')
+
+    @server.names_from_waiting
+    expect(@server.client_names.count).to eql(1)
   end
 end
 

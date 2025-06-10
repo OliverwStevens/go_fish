@@ -81,21 +81,21 @@ class GameSocketRoom
 
   def get_opponent
     current_client.puts 'What player do you want to ask for a card?'
-    opponent_input = listen_for_client # gets.chomp
+    opponent_input = listen_for_client until opponent_input
     game.return_opponent(current_player, opponent_input)
   end
 
   def get_rank
     current_client.puts 'What rank do you want?'
-    rank_input = listen_for_client # gets.chomp
-    rank = game.return_rank(current_player, rank_input)
+    rank_input = listen_for_client until rank_input
+    game.return_rank(current_player, rank_input)
   end
 
   def listen_for_client
     sleep(0.1)
     begin
       # current_client.read_nonblock(1000)
-      current_client.gets.chomp
+      current_client.read_nonblock(1000).chomp
     rescue IO::WaitReadable
     end
   end

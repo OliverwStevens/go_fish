@@ -38,6 +38,8 @@ class GameSocketServer
 
     client.puts('Waiting for other players')
 
+    client.puts('What is your name?')
+
     waiting_clients.push(client)
     # 2
   rescue IO::WaitReadable, Errno::EINTR
@@ -73,37 +75,15 @@ class GameSocketServer
     end
   end
 
-  def ask_for_names(names = nil)
-    if names
-
-      self.clients += waiting_clients
-      waiting_clients.clear
-      self.client_names += names
-
-    else
-
-      names_from_waiting
-    end
-  end
-
-  private
-
   def names_from_waiting
     waiting_clients.each do |client|
-      name = ask_for_name(client)
+      name = listen_for_client(client)
+      next unless name
+
       clients << waiting_clients.delete(client)
       client_names << name
+
+      client.puts("Your name is #{name}.")
     end
-  end
-
-  def ask_for_name(client, client_name = nil)
-    client.puts('What is your name?')
-
-    client_name ||= listen_for_client(client) until client_name
-    p client_name
-
-    client.puts("Your name is #{client_name}.")
-
-    client_name
   end
 end

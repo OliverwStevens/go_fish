@@ -6,7 +6,7 @@ server.start
 loop do
   server.accept_new_client
 
-  server.ask_for_names
+  server.names_from_waiting
   game = server.create_game_if_possible
 
   server.run_game(game) if game
