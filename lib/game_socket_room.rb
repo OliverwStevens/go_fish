@@ -24,6 +24,7 @@ class GameSocketRoom
     start_game
     until game.game_end?
       self.turn_over = false
+      message_all_clients("#{current_player.name}'s turn")
       self.turn_over = true unless turn until turn_over
 
       self.rounds += 1
