@@ -23,10 +23,10 @@ class GameSocketRoom
   def run_game
     start_game
     until game.game_end?
-      # Loop here, this will be a turn
-
       self.turn_over = false
-      round until turn_over
+      self.turn_over = true unless turn until turn_over
+
+      self.rounds += 1
     end
   end
 
@@ -38,24 +38,12 @@ class GameSocketRoom
     game.players[rounds % game.players.count]
   end
 
-  def turn
+  def turn(opponent = nil, rank = nil)
     check_to_have_cards
     display_cards
-    opponent, rank = player_choices
-    # binding.irb
-    message = game.round(current_player, opponent, rank)
-
-    current_client.puts(message)
-
-    current_client.puts(current_player.find_matches)
-
-    message
-  end
-
-  def round
-    self.turn_over = true unless turn.match("rank #{rank}")
-    self.rounds += 1
-    binding.irb
+    opponent ||= get_opponent
+    rank ||= get_rank
+    message_results(opponent, rank)
   end
 
   def check_to_have_cards
@@ -82,26 +70,31 @@ class GameSocketRoom
     end
   end
 
-  def player_choices
-    opponent, rank = []
-    until game.validate_input?(opponent, rank)
-      opponent = get_opponent
-      rank = get_rank
-      binding.irb
+  def message_other_clients(message)
+    other_clients = clients - [current_client]
+    other_clients.each do |client|
+      client.puts(message)
     end
-    [opponent, rank]
   end
 
   def get_opponent
-    current_client.puts 'What player do you want to ask for a card?'
-    opponent_input = listen_for_client # gets.chomp
-    game.return_opponent(current_player, opponent_input)
+    opponent = nil
+    while opponent.nil?
+      current_client.puts 'What player do you want to ask for a card?'
+      opponent_input = listen_for_client # gets.chomp
+      opponent = game.return_opponent(current_player, opponent_input)
+    end
+    opponent
   end
 
   def get_rank
-    current_client.puts 'What rank do you want?'
-    rank_input = listen_for_client # gets.chomp
-    game.return_rank(current_player, rank_input)
+    rank = nil
+    while rank.nil?
+      current_client.puts 'What rank do you want?'
+      rank_input = listen_for_client # gets.chomp
+      rank = game.return_rank(current_player, rank_input)
+    end
+    rank
   end
 
   def listen_for_client
@@ -111,5 +104,16 @@ class GameSocketRoom
       current_client.gets.chomp
     rescue IO::WaitReadable
     end
+  end
+
+  private
+
+  def message_results(opponent, rank)
+    message = game.round(current_player, opponent, rank)
+
+    current_client.puts(message)
+
+    current_client.puts(current_player.find_matches)
+    message.include? "rank #{rank}"
   end
 end

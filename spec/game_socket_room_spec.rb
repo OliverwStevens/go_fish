@@ -38,6 +38,12 @@ describe GameSocketRoom do
     expect(client2.capture_output).to match(/hello/i)
   end
 
+  it '#messages_other_clients' do
+    @room.message_other_clients('Hello')
+    expect(client1.capture_output).to_not match(/hello/i)
+    expect(client2.capture_output).to match(/hello/i)
+  end
+
   it '#start_game' do
     @room.start_game
     expect(client1.capture_output).to match(/the players/i)
@@ -48,7 +54,7 @@ describe GameSocketRoom do
   end
 
   it '#check_to_have_cards' do
-    expect(@room.check_to_have_cards)
+    expect(@room.check_to_have_cards).to be_nil
   end
 
   it '#display_cards' do
@@ -68,13 +74,10 @@ describe GameSocketRoom do
     client1.provide_input('2')
     expect(@room.get_rank).to eql('2')
   end
-
-  xit 'plays a round' do
-    get_player(1).hand = [PlayingCard.new('♥', '2')]
-    # get_player(2).hand = [PlayingCard.new('♦', '2')]
-    # @room.game.deck = [PlayingCard.new('♥', '3')]
-    # @room.round
-    expect(@room.rounds).to eql(1)
+  it '#turn' do
+    get_player(0).hand = [PlayingCard.new('♥', '2')]
+    get_player(1).hand = [PlayingCard.new('♦', '2')]
+    expect(@room.turn(get_player(1), '2')).to eql(true)
   end
 
   private
