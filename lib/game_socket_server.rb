@@ -81,16 +81,20 @@ class GameSocketServer
       self.client_names += names
 
     else
-      waiting_clients.each do |client|
-        puts client
-        name = ask_for_name(client)
-        clients << waiting_clients.delete(client)
-        client_names << name
-      end
+
+      names_from_waiting
     end
   end
 
   private
+
+  def names_from_waiting
+    waiting_clients.each do |client|
+      name = ask_for_name(client)
+      clients << waiting_clients.delete(client)
+      client_names << name
+    end
+  end
 
   def ask_for_name(client, client_name = nil)
     client.puts('What is your name?')
